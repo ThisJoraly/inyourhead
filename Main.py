@@ -1,10 +1,11 @@
 import random
 import sys
 
+
 from Users import User
 from Admins import Admin
 from Orders import Order
-
+from Studio import Studio
 def main():
     u = User()
     # u - user
@@ -14,6 +15,9 @@ def main():
     # oid - order's id
     a = Admin()
     # a = admin
+    s = Studio()
+    # st - studio
+    # sid - studio id
 
     while True:
         print("\nДобро пожаловать в приложение студии звукозаписи\n"
@@ -34,7 +38,7 @@ def main():
                 if role == "клиент":
                     handle_client_actions(user_id, u, o)
                 elif role == "админ":
-                    handle_admin_actions(u, a, o)
+                    handle_admin_actions(u, a, o, s)
                 else:
                     print("Неверная роль.")
             else:
@@ -96,7 +100,7 @@ def handle_client_actions(uid, u, o):
             print("Извините, укажите правильное значение")
 
 
-def handle_admin_actions(u, a, o):
+def handle_admin_actions(u, a, o, s):
     while True:
         print("\nАдмин-панель:")
         print("1. Посмотреть всех пользователей")
@@ -104,13 +108,17 @@ def handle_admin_actions(u, a, o):
         print("3. Удалить пользователя")
         print("4. Обновить аренду студии")
         print("5. Удалить аренду студии")
-        print("6. Выйти")
+        print("6. Посмотреть все открытые студии")
+        print("7. Добавить/открыть комнату студии")
+        print("8. Обновить комнату студии")
+        print("9. Удалить/закрыть комнату студии")
+        print("10. Выйти")
 
         admin_choice = input(">> ")
         match admin_choice:
             case "1":
                 admin_password = input("Введите мастер-пароль: ")
-                u.read_users(u, admin_password)
+                print(u.read_users())
                 break
 
             case "2":
@@ -145,6 +153,34 @@ def handle_admin_actions(u, a, o):
                 print("Аренда была успешно удалена")
                 break
             case "6":
+                print(s.read())
+                break
+            case "7":
+                s_a = int(input("Введите id студии: "))
+                s_b = input("Введите название студии: ")
+                s_c = int(input("Введите номер комнаты студии: "))
+                s_d = input("Введите микрофон в студии: ")
+                s_e = input("Введите наушники в студии: ")
+                s_f = input("Введите ПО в студии: ")
+                s.add(s_a, s_b, s_c, s_d, s_e, s_f)
+                break
+            case "8":
+                s_0 = int(input("Введите старый id студии: "))
+                s_id = int(input("Введите новый id студии: "))
+                s_name = input("Введите новое название студии: ")
+                s_room = int(input("Введите новый номер комнаты студии: "))
+                s_microphone = input("Введите обновленный микрофон в студии: ")
+                s_headphones = input("Введите обновленные наушники в студии: ")
+                s_software = input("Введите обновленное ПО в студии: ")
+                s.update(s_0, s_id, s_name, s_room, s_microphone, s_headphones, s_software)
+                print("Данные о студии успешно изменены!")
+                break
+            case "9":
+                admin_password = input("Введите мастер-пароль: ")
+                studid = input("Введите ID комнаты студии что надо удалить: ")
+                s.delete(studid)
+                break
+            case "10":
                 sys.exit(0)
 
             case _:
